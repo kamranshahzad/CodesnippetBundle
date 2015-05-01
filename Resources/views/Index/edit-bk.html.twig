@@ -1,0 +1,47 @@
+{% extends themes %}
+
+
+{% block body %}
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <h2>New Link</h2>
+
+    <form class="entity" action="{{ path('snippets_edit', {'id': id}) }}" method="post" {{ form_enctype(form) }} >
+        {{ form_row(form.title) }}
+
+        <div id="codesnippet_form_snippets" data-prototype="{{ form_widget(form.snippets.vars.prototype) | e }}">
+            {% for snip in form.snippets %}
+                <li>{{ form_row(snip.filename) }}</li>
+                <li>{{ form_row(snip.language) }}</li>
+                <li>{{ form_row(snip.codetext) }}</li>
+                <li>
+                    {% if form.snippets.vars.allow_delete %}
+                        <a href="#" data-removefield="collection" data-field="">Remove</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            <li><a href="#" class="add_tag_link">Add a tag</a></li>
+        </div>
+
+        <div class="actions">
+            <input type="submit" value="create" />
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        function addTagForm() {
+
+            var collectionHolder = $('#codesnippet_form_snippets');
+            var prototype = collectionHolder.attr('data-prototype');
+            form = prototype.replace(/__name__/g, collectionHolder.children().length);
+            collectionHolder.prepend(form);
+           // console.log(collectionHolder.children().length-1);
+        }
+        $('a.add_tag_link').click(function(event){
+            event.preventDefault();
+            addTagForm();
+        });
+    </script>
+
+{% endblock %}

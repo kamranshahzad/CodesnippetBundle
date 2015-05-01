@@ -1,0 +1,15 @@
+{% extends themes %}
+
+{% block body %}
+
+    <h2>New Link</h2>
+
+    <form class="entity" action="{{ path('snippets_create') }}" method="post" {{ form_enctype(form) }} >
+        {{ form_errors(form) }}
+        {{ form_rest(form) }}
+        <div class="actions">
+            <input type="submit" value="create" />
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends themes %}
+
+
+{% block body %}
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <h1>Product creation</h1>
+
+<form action="{{ path('product_create') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Create</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('product') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="#" class="jslink">
+            Add a tag
+        </a>
+    </li>
+</ul>
+    <script>
+        function add() {
+            var collectionHolder = $('#khepin_productbundle_producttype_tags');
+            var prototype = collectionHolder.attr('data-prototype');
+            form = prototype.replace(/\$\$name\$\$/g, collectionHolder.children().length);
+            form =  $(form).filter('div').first().html($(form).html() +'<a class="delete_link" href="#">remove</a>');
+            collectionHolder.append(form);
+        }
+
+        $('a.jslink').click(function(event){
+            event.preventDefault();
+            add();
+        });
+
+        $(document).on('click', 'a.delete_link',function(event){
+            $(event.currentTarget).parent().remove();
+        });
+    </script>
+{% endblock %}

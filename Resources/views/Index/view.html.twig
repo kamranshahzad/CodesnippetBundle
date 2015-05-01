@@ -1,0 +1,66 @@
+<style type="text/css">
+.cm-s-eclipse { font-size: 14px;}
+</style>
+
+<p style="text-align:right;">
+<div class="btn-group">
+  <button type="button" class="btn btn-default">Modify</button>
+  <button type="button" class="btn btn-default">Remove Snippet</button>
+</div>
+</p>
+
+{{app.request.getSchemeAndHttpHost() }}
+
+<div class="fields-container">
+	<div class="form-group">
+		{{ form_widget(form.title,{'disabled': true}) }}
+	</div>	
+	<div class="form-group">
+		{{ form_widget(form.comment) }}
+	</div>
+
+	{% for child in form.snippets %}
+		<div class="code-container">
+			<div class="form-inline">
+                <div class="form-group">
+                    {{ form_widget(child.filename) }}
+                </div>
+                <div class="form-group">
+                    {{ form_widget(child.language) }}
+                </div>
+            </div><!--@form-inline-->
+            {% set lang = child.language.vars.value %}
+            {{ form_widget(child.codetext,{'attr':{'data-lang':lang}}) }}
+		
+		</div><!--@code-container -->	
+	{% endfor %}	
+
+</div><!--@fields-container-->
+
+
+<script>
+	$('.code-container').find('textarea').each(function() {
+		var lang = $(this).data('lang');
+		drawEditor($(this).prop('id') , lang);
+	});
+	function drawEditor(id , lang){
+
+        //console.log(id);
+        CodeMirror.modeURL = '{{ asset("assets/vendor/codemirror-4.0/mode/%N/%N.js") }}';
+        var editor = CodeMirror.fromTextArea( document.getElementById(id) , {
+                //height: "350px",
+                lineNumbers: true,
+                styleActiveLine: true
+                //matchBrackets: true
+            });
+        editor.setOption("theme", 'eclipse');
+        if(lang){
+            editor.setOption("mode", lang);
+            CodeMirror.autoLoadMode(editor, lang);
+        }
+    }
+</script>
+
+
+
+

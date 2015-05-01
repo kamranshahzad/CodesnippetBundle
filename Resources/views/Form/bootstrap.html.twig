@@ -1,0 +1,65 @@
+{% block form_row %}
+    {% spaceless %}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block code_form_widget %}
+    <div class="fields-container">
+        <div class="form-group">
+            {{ form_errors(form.title) }}
+            {{ form_row(form.title) }}
+        </div>
+        <div class="form-group">
+            {{ form_errors(form.comment) }}
+            {{ form_row(form.comment) }}
+        </div>
+        <div class="form-group">
+            {% for tag in form.tags %}
+                <label class="checkbox-inline">
+                {{ form_widget(tag) }} {{ form_label(tag) }}
+                </label>
+            {% endfor %}
+        </div>
+    </div><!-- @fields-container -->
+
+   {{ form_widget(form.snippets) }}
+
+    <div class="form-group">
+        <button type="button" id="addSnippetFileBtn" class="btn btn-warning btn-sm">Add Code File</button>
+        <button type="button" id="removeSnippetFileBtn" class="btn btn-danger btn-sm">Remove Code File</button>
+    </div>
+
+{% endblock %}
+
+{% block snippet_form_widget %}
+    {% spaceless %}
+        <div class="code-container">
+            <div class="form-inline">
+                <div class="form-group">
+                    {{ form_errors(form.filename) }}
+                    {{ form_widget(form.filename) }}
+                </div>
+                <div class="form-group">
+                    {{ form_errors(form.language) }}
+                    {{ form_widget(form.language) }}
+                </div>
+            </div><!--@form-inline-->
+            {{ form_errors(form.codetext) }}
+            {{ form_widget(form.codetext) }}
+        </div><!--@code-container-->
+    {% endspaceless %}
+{% endblock %}
+
+
+{% block testfieldtype_widget %}
+    {% if myitems is defined %}
+        {{ myitems }}
+    {% else %}
+        <b>No Value found</b>
+    {% endif %}
+{% endblock testfieldtype_widget %}
+
+

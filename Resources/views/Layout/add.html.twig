@@ -1,0 +1,56 @@
+
+<style type="text/css">
+.cm-s-eclipse { font-size: 15px;}
+</style>
+
+
+<div class="snippet-container" style="padding: 10px 15px;">
+    <form class="entity" action="{{ path('snippets_add') }}" method="post" {{ form_enctype(form) }} >
+
+        {{ form_widget(form._token) }}
+        {{ form_widget(form) }}
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save Snippet</button>
+        </div>
+
+    </form>
+    <!--@snippet-container-->
+</div>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            addSnippetForm();
+        });
+        function addSnippetForm() {
+            var collectionHolder = $('#code_form_snippets');
+
+            var pointer = collectionHolder.children('.code-container').length;
+            var prototype = collectionHolder.attr('data-prototype');
+            form = prototype.replace(/__name__/g, pointer);
+            collectionHolder.append(form);
+            collectionHolder.find('label').remove();
+            //console.log(collectionHolder.children('.').length);
+            //code_form_snippets_0_codetext
+            //setInterval(function(){alert("Hello")},3000);
+            //
+           drawEditor("code_form_snippets_"+pointer+"_codetext");
+
+        }
+        $('#addSnippetFileBtn').click(function(event){
+            //event.preventDefault();
+            addSnippetForm();
+        });
+        function drawEditor(id)
+        {
+            var editor = CodeMirror.fromTextArea( document.getElementById(id) , {
+                //height: "350px",
+                lineNumbers: true,
+                styleActiveLine: true,
+                matchBrackets: true,
+                mode: 'application/x-httpd-php'
+            });
+            editor.setOption("theme", 'eclipse');
+            editor.on("blur", function() {editor.save()});
+        }
+    </script>

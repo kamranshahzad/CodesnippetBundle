@@ -1,0 +1,36 @@
+{% extends themes %}
+
+
+{% block body %}
+
+	{% set actionUrl = app.request.attributes.get('_route') %}
+	
+	{% if actionUrl == 'snippets_index' %}
+		<!-- breadcrumb -->
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="{{ path('index_default') }}"><i class="fa fa-home"></i> Home</a></li>
+                <li class="active">Code Snippets</li>
+            </ol>
+        </div>
+        <!-- @breadcrumb -->
+
+		{% set vars = {'techRep': techRep , 'tagsRep':tagsRep} %}
+		{% include 'KamranCodesnippetBundle:Layout:main.html.twig' with vars %}
+	{% elseif actionUrl == 'snippets_add' %}
+		<!-- breadcrumb -->
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="{{ path('index_default') }}"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="{{ path('snippets_index') }}"> Code Snippets </a></li>
+                <li class="active">Add Code Snippet</li>
+            </ol>
+        </div>
+        <!-- @breadcrumb -->
+
+		{% set vars = {'form': form } %}
+		{% include 'KamranCodesnippetBundle:Layout:add.html.twig' with vars %}
+	{% endif %}
+
+
+{% endblock body %}

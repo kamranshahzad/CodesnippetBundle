@@ -1,0 +1,115 @@
+<div class="col-md-2 tcolor2" style="min-height: 800px;padding:10px;">
+<!-- filterforms -->
+    
+    <p>
+        <a href="{{ path('snippets_add') }}" class="btn btn-primary">Add Snippet</a>
+    </p>
+
+    <form>
+
+        <div class="form-group">
+            <select name="technologyOpts" id="technologyOpts" class="form-control">
+                <option value="">Select Technology</option>
+                {% for item in techRep %}
+                    <option value="{{ item.id }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+
+        </div>    
+
+    </form>
+
+    <div class="list-group" id="technologyTags">
+      {% for item in tagsRep %}  
+        <a href="#" class="list-group-item" data-item="{{ item.id }}"> {{ item.name }}  </a>
+      {% endfor %}
+    </div>    
+
+
+
+<!-- @filterforms -->
+</div>
+
+<div class="col-md-3 tcolor3" style="min-height: 800px;padding-top:10px;">
+<!--searchbar-->
+    
+    <div class="form-group">
+        <input type="text" placeholder="Keyword to search" class="form-control"> 
+    </div>    
+
+    <div class="list-group" id="snippetItemLst"></div>
+
+
+<!--@searchbar-->
+</div>
+
+<div class="col-md-7" id="viewSnippetContainer">
+
+        <!-- @col-->
+</div>
+
+
+<script type="text/javascript">
+    
+    $.ajaxSetup ({ cache: false });
+
+    $( "#technologyTags" ).on( "click", "a", function( event ) {
+        event.preventDefault();
+        var url = Routing.generate('snip_ajax_tagcodes', {'tagid':$(this).data('item')});
+        $('#snippetItemLst').html("<b>Loading....</b>");
+        $.getJSON(
+                url,
+                {},
+                function(json) {
+                    var htmlString = '';
+                    $.each( json , function( key, val ) {
+                        htmlString += '<a href="#" data-item="'+val['id']+'" class="list-group-item">';
+                        htmlString += '<h5 class="list-group-item-heading">'+val['title']+'</h5>';
+                        htmlString += '<p class="list-group-item-text">'+val['comment']+'</p>';
+                        htmlString += '</a>';
+                    });
+                    if(htmlString ==''){
+                        $('#snippetItemLst').html('No Code found');    
+                    }else{
+                        $('#snippetItemLst').html(htmlString);
+                    }
+                }
+        );
+    });
+
+
+    $( "#snippetItemLst" ).on( "click", "a", function( event ) {
+        event.preventDefault();
+
+        $('#viewSnippetContainer').html('<b>Loading .....</b>');
+        var url = Routing.generate('snippets_view', {'id':$(this).data('item')});
+        $('#viewSnippetContainer').load(url);
+    });
+    
+
+
+
+
+    $('#technologyOpts').on('change',function(){
+        var techid = $(this).val();
+
+        if(techid){
+            
+            $.getJSON(
+                '{{ path("snip_ajax_technologytools", {'id': 3 } ) }}',
+                {id: techid},
+                function(json) {
+                    console.log(json);
+                }
+            );
+        }
+
+    });
+
+
+
+
+</script>

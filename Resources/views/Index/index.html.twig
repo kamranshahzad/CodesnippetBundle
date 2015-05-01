@@ -1,0 +1,20 @@
+{% extends themes %}
+
+
+{% block body %}
+
+
+	{% for tech in entity %}
+		{{ tech.name }}
+	{% endfor %}
+
+
+	
+    
+
+    {{ parent() }}<br/>
+{% endblock %}
+
+
+
+

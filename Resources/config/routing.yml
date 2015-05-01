@@ -1,0 +1,4 @@
+codesnippet_annotation:
+    resource: "@KamranCodesnippetBundle/Controller"
+    type:     annotation
+
